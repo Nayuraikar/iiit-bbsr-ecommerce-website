@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Add a New Product</h1>
+    <form action="{{ url_for('add_product') }}" method="POST" enctype="multipart/form-data">
+        <label for="name">Product Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter product name" required><br>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" placeholder="Describe the product" required></textarea><br>
+
+        <label for="price">Price:</label>
+        <input type="text" id="price" name="price" placeholder="Enter price in ₹" required><br>
+
+        <label for="image">Image URL:</label>
+        <input type="text" id="image" name="image" placeholder="Paste image URL here" required><br>
+
+        <button type="submit">Add Product</button>
+    </form>
+</body>
+</html>

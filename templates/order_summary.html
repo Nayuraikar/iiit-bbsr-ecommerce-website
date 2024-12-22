@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Summary</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Your Order Summary</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('view_cart') }}">Cart</a>
+        </nav>
+    </header>
+
+    <section class="order-summary">
+        <h2>Order Details</h2>
+        <div class="order-items">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>SKU</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order_items %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.sku }}</td> <!-- Display SKU here -->
+                            <td>{{ item.quantity }}</td>
+                            <td>${{ item.price }}</td>
+                            <td>${{ item.total }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="order-summary-footer">
+            <div class="subtotal">
+                <p><strong>Subtotal:</strong> ${{ subtotal }}</p>
+            </div>
+            <div class="shipping">
+                <p><strong>Shipping:</strong> ${{ shipping_cost }}</p>
+            </div>
+            <div class="total">
+                <p><strong>Total:</strong> ${{ total }}</p>
+            </div>
+        </div>
+
+        <button class="checkout-btn">Proceed to Checkout</button>
+    </section>
+
+    <footer>
+        <p>Thank you for shopping with us!</p>
+    </footer>
+</body>
+</html>

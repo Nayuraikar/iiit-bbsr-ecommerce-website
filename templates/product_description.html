@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product['name'] }} - Product Description</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        let timer;
+        let timeSpent = 0;
+
+        function startTimer() {
+            timer = setInterval(function() {
+                timeSpent += 1;
+                if (timeSpent >= 10) { 
+                    showPopup();
+                    clearInterval(timer); 
+                }
+            }, 1000);
+        }
+
+        function showPopup() {
+            document.getElementById('offerPopup').innerHTML = `
+                <h2>It looks like you're interested in the product. Can I connect you to our support team?</h2>
+                <button onclick="connectCustomer()">Yes</button>
+                <button onclick="closePopup()">No</button>
+            `;
+            document.getElementById('offerPopup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function connectCustomer() {
+            document.getElementById('offerPopup').innerHTML = `<h2>Connecting...</h2>`;
+            setTimeout(() => {
+                closePopup();
+            }, 5000);
+        }
+
+        function closePopup() {
+            document.getElementById('offerPopup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        window.onload = startTimer;
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Our Store</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('view_cart') }}">Cart</a>
+        </nav>
+    </header>
+
+    <section class="product-description">
+        <h2>{{ product['name'] }}</h2>
+        <img src="{{ url_for('static', filename='images/' + (product['images.png'] | default('default.png', true))) }}" alt="{{ product['name'] }}" class="product-image">
+        
+        <p><strong>Price:</strong> ₹{{ product['price'] }}</p>
+        <p><strong>Description:</strong> {{ product['description'] }}</p>
+
+        <button class="add-to-cart" onclick="window.location.href='{{ url_for('add_to_cart', product_id=product['id']) }}'">Add to Cart</button>
+    </section>
+
+    <div id="overlay" style="display: none;"></div>
+    <div id="offerPopup" class="popup" style="display: none;"></div>
+
+    <footer>
+        <p>Thank you for visiting!</p>
+    </footer>
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f1f1f1;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(135deg, #2c2c3a, #4e4e6d);
+            color: #d3b0e0;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        nav {
+            margin-top: 10px;
+        }
+
+        nav a {
+            color: #d3b0e0;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        nav a:hover {
+            color: #e6c7f2;
+            text-decoration: underline;
+        }
+        .product-description {
+            text-align: center;
+            margin: 40px auto;
+            max-width: 600px;
+            padding: 30px;
+            background-color: #2c2c3a;
+            border-radius: 12px;
+            color: #fff;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-description:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-description h2 {
+            color: #e6c7f2;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .product-description p {
+            font-size: 1.1rem;
+            margin: 10px 0;
+        }
+
+        .product-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin: 20px 0;
+            transition: transform 0.3s ease;
+        }
+
+        .product-image:hover {
+            transform: scale(1.05);
+        }
+
+
+        .add-to-cart {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #d3b0e0, #e6c7f2);
+            color: #1e1e2f;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .add-to-cart:hover {
+            background-color: #e6c7f2;
+            transform: scale(1.05);
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .popup h2 {
+            margin-top: 0;
+            font-size: 1.6rem;
+        }
+
+        .popup button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .popup button:hover {
+            background-color: #45a049;
+        }
+
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: #2c2c3a;
+            color: #d3b0e0;
+            font-size: 1.2rem;
+            margin-top: 3rem;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</body>
+</html>

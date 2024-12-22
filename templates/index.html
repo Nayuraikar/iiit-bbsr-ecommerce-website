@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Store</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <h1>OUR STORE</h1>
+        </div>
+        <nav class="nav-bar">
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('view_cart') }}">Cart</a>
+            <a href="{{ url_for('login') }}">Login</a>
+        </nav>
+    </header>
+
+    <section class="banner">
+        <div class="banner-content">
+            <h2>Explore Our Exclusive Products</h2>
+            <p>Find everything you need in one place.</p>
+            <button class="shop-now" onclick="window.location.href='{{ url_for('index') }}'">Shop Now</button>
+        </div>
+    </section>
+
+    <section class="search-container">
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Search for products..." oninput="filterProducts()">
+            <button id="voice-search-btn" onclick="startVoiceSearch()">🎤</button>
+        </div>
+    </section>
+
+    <section class="product-list">
+        <h2>Our Products</h2>
+        <div class="product-grid">
+            {% for product in products %}
+            <div class="product-card" data-name="{{ product['name'] }}">
+                <img src="{{ url_for('static', filename='images/' + product['image']) }}" alt="{{ product['name'] }}" class="product-image">
+                <div class="product-info">
+                    <h3>{{ product['name'] }}</h3>
+                    <p class="price"><strong>Price:</strong> ₹{{ product['price'] }}</p>
+                    <a href="{{ url_for('product_page', product_id=product['id']) }}" class="view-details">View Details</a>
+                    <button class="add-to-cart" onclick="window.location.href='{{ url_for('add_to_cart', product_id=product['id']) }}'">Add to Cart</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <script>
+        function startVoiceSearch() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                alert("Voice recognition is not supported in this browser. Please use Chrome or Edge.");
+                return;
+            }
+
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'en-Es'; 
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.onstart = function() {
+                console.log('Voice search started');
+            };
+
+            recognition.onresult = function(event) {
+                const query = event.results[0][0].transcript.toLowerCase();
+                document.getElementById('search-input').value = query;
+                filterProducts();
+            };
+
+            recognition.onerror = function(event) {
+                console.error('Error code:', event.error);
+                alert(`Error: ${event.error}`);
+            };
+
+            recognition.onend = function() {
+                console.log('Voice recognition ended');
+            };
+
+            recognition.start();
+        }
+
+        function filterProducts() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const productCards = document.querySelectorAll('.product-card');
+
+            productCards.forEach(card => {
+                const productName = card.getAttribute('data-name').toLowerCase();
+                if (productName.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

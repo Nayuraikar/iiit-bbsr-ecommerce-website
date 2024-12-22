@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(135deg, #4e4e6d, #2c2c3a);
+            color: #fff;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        nav {
+            margin-top: 15px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        nav a:hover {
+            color: #e6c7f2;
+            text-decoration: underline;
+        }
+        .cart-items {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 40px auto;
+            max-width: 900px;
+            padding: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+            width: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cart-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .cart-item img {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+
+        .cart-item p {
+            font-size: 1.2rem;
+            margin: 5px 0;
+        }
+
+        .cart-item button {
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .cart-item button:hover {
+            background-color: #e53935;
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #2c2c3a;
+            color: #fff;
+            margin-top: 30px;
+            font-size: 1.5rem;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Your Cart</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('checkout') }}">Checkout</a>
+        </nav>
+    </header>
+
+    <section class="cart-items">
+        {% for item in cart_items %}
+            <div class="cart-item">
+                <img src="{{ url_for('static', filename='images/' + item['image']) }}" alt="{{ item['name'] }}" class="product-image">
+                <div>
+                    <p><strong>{{ item['name'] }}</strong></p>
+                    <p>₹{{ item['price'] }} x {{ item['quantity'] }}</p>
+                    <p><strong>Total:</strong> ₹{{ item['price'] * item['quantity'] }}</p>
+                </div>
+
+                <form action="{{ url_for('remove_from_cart', product_id=item['product_id']) }}" method="POST" style="display: inline;">
+                    <button type="submit" class="remove-item">Remove</button>
+                </form>
+            </div>
+        {% endfor %}
+    </section>
+
+    <footer>
+        <p>Total Price: ₹{{ total_price }}</p>
+    </footer>
+</body>
+</html>

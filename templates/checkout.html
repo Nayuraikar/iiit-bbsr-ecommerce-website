@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+       
+        .header {
+            background: linear-gradient(135deg, #4e4e6d, #2c2c3a);
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .checkout-summary {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .checkout-summary h3 {
+            font-size: 2rem;
+            color: #4e4e6d;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .checkout-summary p {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .checkout-summary p strong {
+            font-size: 1.5rem;
+            color: #4e4e6d;
+        }
+        .discount {
+            color: #4e4e6d;
+            font-weight: bold;
+        }
+
+        .checkout-summary form {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .checkout-summary button {
+            padding: 15px 30px;
+            background-color: #4CAF50;
+            color: #fff;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s ease;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .checkout-summary button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .checkout-summary {
+                padding: 20px;
+                margin: 20px;
+            }
+
+            .checkout-summary h3 {
+                font-size: 1.8rem;
+            }
+
+            .checkout-summary p {
+                font-size: 1rem;
+            }
+
+            .checkout-summary button {
+                font-size: 1.1rem;
+                padding: 12px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Checkout</h1>
+    </header>
+    
+    <section class="checkout-summary">
+        <h3>Order Summary</h3>
+        <p>Total Price: ₹{{ total_price }}</p>
+
+        {% if discount > 0 %}
+            <p class="discount">Discount Applied: ₹{{ discount }} ({{ discount_percentage }}% off)</p>
+        {% else %}
+            <p>No discount applied.</p>
+        {% endif %}
+
+        <p><strong>Final Price: ₹{{ final_price }}</strong></p>
+
+        <form action="{{ url_for('checkout') }}" method="POST">
+            <button type="submit">Complete Purchase</button>
+        </form>
+    </section>
+</body>
+</html>

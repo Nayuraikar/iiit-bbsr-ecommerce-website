@@ -1,0 +1,104 @@
+
+<div class="chatbot-container">
+    <div id="chatbot-button" onclick="toggleChat()">
+        Chat with us!
+    </div>
+    <div id="chatbot-window" class="chatbot-window">
+        <div class="chat-header">
+            <span>Chatbot</span>
+            <button onclick="toggleChat()">Close</button>
+        </div>
+        <div id="chat-content" class="chat-content">
+        </div>
+        <input type="text" id="user-input" placeholder="Type a message..." onkeydown="handleInput(event)">
+    </div>
+</div>
+
+<style>
+    .chatbot-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+    }
+
+    #chatbot-button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px;
+        border-radius: 50px;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    #chatbot-window {
+        display: none;
+        width: 300px;
+        height: 400px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        position: absolute;
+        bottom: 60px;
+        right: 0;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .chat-header {
+        background-color: #007bff;
+        color: white;
+        padding: 10px;
+        border-radius: 10px 10px 0 0;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .chat-content {
+        padding: 10px;
+        height: 300px;
+        overflow-y: auto;
+        background-color: #f9f9f9;
+    }
+
+    #user-input {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-top: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+</style>
+
+<script>
+    function toggleChat() {
+        var chatWindow = document.getElementById("chatbot-window");
+        chatWindow.style.display = chatWindow.style.display === "block" ? "none" : "block";
+    }
+
+    function handleInput(event) {
+        if (event.key === "Enter") {
+            var userMessage = document.getElementById("user-input").value;
+            if (userMessage.trim() !== "") {
+                document.getElementById("chat-content").innerHTML += `<p><strong>You:</strong> ${userMessage}</p>`;
+                document.getElementById("user-input").value = '';
+                getChatbotResponse(userMessage);
+            }
+        }
+    }
+
+    function getChatbotResponse(userMessage) {
+        // Simulate a simple response based on user input (you can replace this with your backend logic)
+        var response = "I'm sorry, I don't understand that yet.";
+        if (userMessage.toLowerCase().includes("hello")) {
+            response = "Hello! How can I help you today?";
+        } else if (userMessage.toLowerCase().includes("cart")) {
+            response = "I can assist you with your cart. Do you want to view it?";
+        } else if (userMessage.toLowerCase().includes("order")) {
+            response = "I can help you with your order. Do you need assistance with checkout?";
+        }
+
+        document.getElementById("chat-content").innerHTML += `<p><strong>Chatbot:</strong> ${response}</p>`;
+        var chatContent = document.getElementById("chat-content");
+        chatContent.scrollTop = chatContent.scrollHeight;
+    }
+</script>
