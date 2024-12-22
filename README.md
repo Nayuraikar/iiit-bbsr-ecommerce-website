@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # iiit-bbsr-ecommerce-website
 =======
 # AI-Powered E-Commerce Assistant
@@ -75,4 +74,3 @@ The AI-powered e-commerce assistant is a dynamic web application that enhances t
    ```
 2. Open the application in your browser at `http://localhost:5000`.
 
->>>>>>> 88650be (Initial commit)
