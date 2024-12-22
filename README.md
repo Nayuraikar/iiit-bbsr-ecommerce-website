@@ -52,15 +52,11 @@ The AI-powered e-commerce assistant is a dynamic web application that enhances t
    ```bash
    git clone https://github.com/Nayuraikar/iiit-bbsr-ecommerce-website.git
    ```
-2. Navigate to the backend directory:
-   ```bash
-   cd ecommerce-assistant/backend
-   ```
-3. Install dependencies:
+2. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-4. Run the Flask app:
+3. Run the Flask app:
    ```bash
    python app.py
    ```
