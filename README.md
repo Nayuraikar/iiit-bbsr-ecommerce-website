@@ -50,7 +50,7 @@ The AI-powered e-commerce assistant is a dynamic web application that enhances t
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/username/ecommerce-assistant.git
+   git clone https://github.com/Nayuraikar/iiit-bbsr-ecommerce-website.git
    ```
 2. Navigate to the backend directory:
    ```bash
